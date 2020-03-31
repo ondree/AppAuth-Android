@@ -236,7 +236,7 @@ public class AuthorizationManagementActivity extends Activity {
         } else {
             handleAuthorizationCanceled();
         }
-        finish();
+        finishDelayed(7_000L);
     }
 
     @Override
@@ -272,13 +272,13 @@ public class AuthorizationManagementActivity extends Activity {
                 Logger.error("Failed to send completion intent", ex);
             }
         } else {
-            setDelayedResult(responseData, 7_000L);
+            setResult(RESULT_OK, responseData);
         }
     }
 
-    private void setDelayedResult(Intent responseData, Long delayMillis) {
+    private void finishDelayed(Long delayMillis) {
         final Handler handler = new Handler();
-        handler.postDelayed(() -> setResult(RESULT_OK, responseData), delayMillis);
+        handler.postDelayed(this::finish, delayMillis);
     }
 
     private void handleAuthorizationCanceled() {
