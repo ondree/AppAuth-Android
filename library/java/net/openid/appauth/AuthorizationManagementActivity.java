@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.VisibleForTesting;
 
 import net.openid.appauth.AuthorizationException.AuthorizationRequestErrors;
@@ -271,8 +272,13 @@ public class AuthorizationManagementActivity extends Activity {
                 Logger.error("Failed to send completion intent", ex);
             }
         } else {
-            setResult(RESULT_OK, responseData);
+            setDelayedResult(responseData, 7_000L);
         }
+    }
+
+    private void setDelayedResult(Intent responseData, Long delayMillis) {
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> setResult(RESULT_OK, responseData), delayMillis);
     }
 
     private void handleAuthorizationCanceled() {
