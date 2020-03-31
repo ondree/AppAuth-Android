@@ -232,11 +232,16 @@ public class AuthorizationManagementActivity extends Activity {
          */
 
         if (getIntent().getData() != null) {
-            handleAuthorizationComplete();
+            final Handler handler = new Handler();
+            handler.postDelayed(()->{
+                handleAuthorizationComplete();
+                finish();
+            },7_000L);
+
         } else {
             handleAuthorizationCanceled();
+            finish();
         }
-        finishDelayed(7_000L);
     }
 
     @Override
@@ -274,11 +279,6 @@ public class AuthorizationManagementActivity extends Activity {
         } else {
             setResult(RESULT_OK, responseData);
         }
-    }
-
-    private void finishDelayed(Long delayMillis) {
-        final Handler handler = new Handler();
-        handler.postDelayed(this::finish, delayMillis);
     }
 
     private void handleAuthorizationCanceled() {
